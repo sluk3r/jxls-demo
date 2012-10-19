@@ -1,0 +1,19 @@
+PAGE_HEAD=
+PAGE_FOOT= LIMIT #{low}, #{pageSize}
+
+jdbc.driverClassName=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://localhost:3306/service_development
+jdbc.username=service
+jdbc.password=service
+jdbc.schema=service_development
+jdbc.acquireIncrement=5
+jdbc.minPoolSize=5
+jdbc.maxPoolSize=50
+jdbc.maxIdleTime=10
+jdbc.preferredTestQuery=select 1
+jdbc.mapper=classpath*:mybatis/mysql/*Mapper.xml
+
+jdbc.datatypeFactory=org.dbunit.ext.mysql.MySqlDataTypeFactory
+jdbc.resultSetTableFactory=org.dbunit.database.ForwardOnlyResultSetTableFactory
+jdbc.metadataHandler=org.dbunit.ext.mysql.MySqlMetadataHandler
+

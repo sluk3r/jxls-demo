@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="baseService" abstract="true" class="com.bulain.common.db.AbstractServiceImpl">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="schema" value="${jdbc.schema}"/>
+		<property name="databaseConfig">
+			<props>
+				<prop key="datatypeFactory">${jdbc.datatypeFactory}</prop>
+				<prop key="resultSetTableFactory">${jdbc.resultSetTableFactory}</prop>
+				<prop key="metadataHandler">${jdbc.metadataHandler}</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="importSrv" parent="baseService" class="com.bulain.common.db.ImportImpl"/>
+</beans>

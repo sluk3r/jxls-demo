@@ -21,10 +21,23 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <common.version>1.0.1</common.version>
+        <tools.version>1.5</tools.version>
+        <mysql.version>5.0.8</mysql.version>
+        <ojdbc.version>10.2.0.4.0</ojdbc.version>
+        <migration.env>test</migration.env>
+        <migration.path>src/migration/mysql</migration.path>
+        <database.type>mysql</database.type>
         <jxls.version>1.0</jxls.version>
     </properties>
 
     <dependencies>
+        <!-- common -->
+        <dependency>
+            <groupId>com.bulain</groupId>
+            <artifactId>common-service</artifactId>
+            <version>${common.version}</version>
+        </dependency>
         <!-- jxls -->
         <dependency>
             <groupId>net.sf.jxls</groupId>
@@ -44,8 +57,31 @@
         
         <!-- test -->
         <dependency>
+            <groupId>com.bulain</groupId>
+            <artifactId>common-test</artifactId>
+            <version>${common.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- p6spy -->
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -71,6 +107,92 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.sun</groupId>
+                        <artifactId>tools</artifactId>
+                        <scope>system</scope>
+                        <version>${tools.version}</version>
+                        <systemPath>${java.home}/../lib/tools.jar</systemPath>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="copydevfile">
+                                <copy file="src/main/resources/jdbc.properties.${database.type}" tofile="${project.build.directory}/classes/jdbc.properties" overwrite="true"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-test-resources</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="copytestfile">
+                                <copy file="src/test/resources/jdbc.properties.${database.type}" tofile="${project.build.directory}/test-classes/jdbc.properties" overwrite="true"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="native2ascii">
+                                <native2ascii src="src/main/resources" dest="${project.build.directory}/classes" includes="**/*.chinese" ext=".properties" encoding="UTF-8" />
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.mybatis.maven</groupId>
+                <artifactId>maven-migration-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>migration-up</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>up</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.oracle</groupId>
+                        <artifactId>ojdbc14</artifactId>
+                        <version>${ojdbc.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
     </build>
+    
+    <profiles>
+        <profile>
+            <id>oracle</id>
+            <properties>
+                <migration.path>src/migration/oracle</migration.path>
+                <database.type>oracle</database.type>
+            </properties>
+        </profile>
+    </profiles>
+    
 </project>

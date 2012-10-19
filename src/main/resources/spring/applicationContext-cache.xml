@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+ <!-- 
+	<bean name="memcachedClient" class="net.rubyeye.xmemcached.utils.XMemcachedClientFactoryBean" destroy-method="shutdown">
+        <property name="servers">
+        	<value>${memcached.url}</value>
+        </property>
+   </bean>
+
+	<bean id="cacheService" class="com.bulain.common.cache.MencachedServiceImpl">
+		<property name="memcachedClient" ref="memcachedClient"/>
+	</bean>
+ 
+ 	<bean id="cacheService" class="com.bulain.common.cache.NoCacheServiceImpl"/>
+ -->
+ 
+ 	<bean id="cacheService" class="com.bulain.common.cache.SimpleCacheServiceImpl"/>
+ 	
+</beans>

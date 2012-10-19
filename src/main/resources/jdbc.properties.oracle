@@ -1,0 +1,19 @@
+PAGE_HEAD=select * from ( select row_.*, rownum rownum_ from ( 
+PAGE_FOOT= ) row_ where rownum <= #{high}) where rownum_ > #{low}
+
+jdbc.driverClassName=oracle.jdbc.OracleDriver
+jdbc.url=jdbc:oracle:thin:@localhost:1521:orcl
+jdbc.username=service_development
+jdbc.password=service
+jdbc.schema=service_development
+jdbc.acquireIncrement=5
+jdbc.minPoolSize=5
+jdbc.maxPoolSize=50
+jdbc.maxIdleTime=10
+jdbc.preferredTestQuery=select 1 from dual
+jdbc.mapper=classpath*:mybatis/oracle/*Mapper.xml
+
+jdbc.datatypeFactory=org.dbunit.ext.oracle.OracleDataTypeFactory
+jdbc.resultSetTableFactory=org.dbunit.database.ForwardOnlyResultSetTableFactory
+jdbc.metadataHandler=org.dbunit.database.DefaultMetadataHandler
+
