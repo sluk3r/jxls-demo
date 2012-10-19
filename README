@@ -5,6 +5,11 @@ If you want to build this project, please follow the next step.
 1, checkout out parent and run: 
     git clone git@github.com:bulain/parent.git
     mvn install
-2, checkout out jxls-demo and run: 
+2, checkout out common and run: 
+    git clone git@github.com:bulain/common.git
+    mvn install
+3, checkout out jxls-demo and run: 
     git clone git@github.com:bulain/jxls-demo.git
+    git submodule init
+    git submodule update
     mvn eclipse:eclipse
