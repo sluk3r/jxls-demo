@@ -159,7 +159,7 @@
             </plugin>
             <plugin>
                 <groupId>org.mybatis.maven</groupId>
-                <artifactId>maven-migration-plugin</artifactId>
+                <artifactId>migrations-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>migration-up</id>
